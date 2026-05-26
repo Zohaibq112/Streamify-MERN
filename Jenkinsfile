@@ -130,20 +130,15 @@ pipeline {
         }
 
         // ─────────────────────────────────────────
+     // ─────────────────────────────────────────
         stage('Push Image') {
         // ─────────────────────────────────────────
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                parallel(
-                    'Push Frontend': {
-                        sh "docker push ${IMAGE_FRONTEND}:${IMAGE_TAG}"
-                        sh "docker push ${IMAGE_FRONTEND}:latest"
-                    },
-                    'Push Backend': {
-                        sh "docker push ${IMAGE_BACKEND}:${IMAGE_TAG}"
-                        sh "docker push ${IMAGE_BACKEND}:latest"
-                    }
-                )
+                sh "docker push ${IMAGE_FRONTEND}:${IMAGE_TAG}"
+                sh "docker push ${IMAGE_FRONTEND}:latest"
+                sh "docker push ${IMAGE_BACKEND}:${IMAGE_TAG}"
+                sh "docker push ${IMAGE_BACKEND}:latest"
             }
         }
 
